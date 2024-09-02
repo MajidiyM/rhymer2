@@ -1,7 +1,4 @@
-import 'dart:ui';
-
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 
 void main() {
   runApp(const MyApp());
@@ -35,6 +32,7 @@ class HomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     return Scaffold(
       body: CustomScrollView(
         slivers: [
@@ -49,6 +47,45 @@ class HomeScreen extends StatelessWidget {
               child: SearchButton(),
             ),
           ),
+          const SliverToBoxAdapter(
+            child: SizedBox(
+              height: 16,
+            ),
+          ),
+          SliverList.builder(
+            itemBuilder: (context, index) => RhymeListCard(),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class RhymeListCard extends StatelessWidget {
+  const RhymeListCard({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    return Container(
+      width: double.infinity,
+      margin: const EdgeInsets.symmetric(horizontal: 16).copyWith(bottom: 10),
+      padding: EdgeInsets.only(left: 12),
+      decoration: BoxDecoration(
+        color: theme.cardColor,
+        borderRadius: BorderRadius.circular(10),
+      ),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Text("Рифма", style: theme.textTheme.bodyLarge),
+          IconButton(
+            onPressed: () {},
+            icon: Icon(Icons.favorite),
+            color: theme.hintColor.withOpacity(0.2),
+          )
         ],
       ),
     );
@@ -56,7 +93,7 @@ class HomeScreen extends StatelessWidget {
 }
 
 class SearchButton extends StatelessWidget {
-   const SearchButton({
+  const SearchButton({
     super.key,
   });
 
