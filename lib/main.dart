@@ -52,6 +52,28 @@ class HomeScreen extends StatelessWidget {
               height: 16,
             ),
           ),
+          SliverToBoxAdapter(
+            child: SizedBox(
+              height: 100,
+              child: ListView.separated(
+                padding: EdgeInsets.only(left: 16),
+                scrollDirection: Axis.horizontal,
+                itemCount: 10,
+                separatorBuilder: (context, index) => SizedBox(width: 16),
+                itemBuilder: (context, index) {
+                  final rhymes = List.generate(4, (index) => "Рифма $index");
+                  return RhymeHistoryCard(
+                    rhymes: rhymes,
+                  );
+                },
+              ),
+            ),
+          ),
+          const SliverToBoxAdapter(
+            child: SizedBox(
+              height: 16,
+            ),
+          ),
           SliverList.builder(
             itemBuilder: (context, index) => RhymeListCard(),
           ),
@@ -61,19 +83,60 @@ class HomeScreen extends StatelessWidget {
   }
 }
 
-class BaseContainer extends StatelessWidget {
-  const BaseContainer({super.key, required this.child, required this.width, this.margin, this.padding});
+class RhymeHistoryCard extends StatelessWidget {
+  const RhymeHistoryCard({super.key, required this.rhymes});
 
-  final Widget child;
+  final List<String> rhymes;
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    return BaseContainer(
+      width: 200,
+      padding: EdgeInsets.all(16),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            "Рифма",
+            style: theme.textTheme.bodyLarge?.copyWith(
+              fontWeight: FontWeight.w700,
+            ),
+          ),
+          Wrap(
+            children: rhymes
+                .map((e) => Padding(
+                      padding: EdgeInsets.only(right: 6),
+                      child: Text(e),
+                    ))
+                .toList(),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class BaseContainer extends StatelessWidget {
+  const BaseContainer({
+    super.key,
+    required this.child,
+    required this.width,
+    this.margin,
+    this.padding = const EdgeInsets.only(left: 12),
+  });
+
   final double width;
   final EdgeInsets? margin;
   final EdgeInsets? padding;
+  final Widget child;
 
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     return Container(
-      width: double.infinity,
+      width: width,
       margin: margin,
       padding: padding,
       decoration: BoxDecoration(
