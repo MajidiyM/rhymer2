@@ -62,17 +62,20 @@ class HomeScreen extends StatelessWidget {
 }
 
 class BaseContainer extends StatelessWidget {
-  const BaseContainer({super.key, required this.child});
+  const BaseContainer({super.key, required this.child, required this.width, this.margin, this.padding});
 
   final Widget child;
+  final double width;
+  final EdgeInsets? margin;
+  final EdgeInsets? padding;
 
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     return Container(
       width: double.infinity,
-      margin: const EdgeInsets.symmetric(horizontal: 16).copyWith(bottom: 10),
-      padding: const EdgeInsets.only(left: 12),
+      margin: margin,
+      padding: padding,
       decoration: BoxDecoration(
         color: theme.cardColor,
         borderRadius: BorderRadius.circular(10),
@@ -91,6 +94,9 @@ class RhymeListCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     return BaseContainer(
+      width: double.infinity,
+      margin: const EdgeInsets.symmetric(horizontal: 16).copyWith(bottom: 10),
+      padding: const EdgeInsets.only(left: 12),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
