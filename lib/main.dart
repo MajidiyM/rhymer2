@@ -25,60 +25,122 @@ class MyApp extends StatelessWidget {
   }
 }
 
-class HomeScreen extends StatelessWidget {
+class HomeScreen extends StatefulWidget {
   const HomeScreen({
     super.key,
   });
 
   @override
+  State<HomeScreen> createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen> {
+  var _selectedPage = 0;
+  var _pageController = PageController();
+
+  @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     return Scaffold(
-      body: CustomScrollView(
-        slivers: [
-          SliverAppBar(
-            floating: true,
-            pinned: true,
-            snap: true,
-            surfaceTintColor: Colors.transparent,
-            title: Text("Rhymer"),
-            bottom: PreferredSize(
-              preferredSize: Size.fromHeight(70),
-              child: SearchButton(),
-            ),
+      body: PageView(
+        controller: _pageController,
+        onPageChanged: (value) {
+          setState(() {
+            _selectedPage = value;
+          });
+        },
+        children: [
+          SearchScreen(),
+          Scaffold(),
+          Scaffold(),
+          Scaffold(),
+        ],
+      ),
+      bottomNavigationBar: BottomNavigationBar(
+        selectedItemColor: theme.primaryColor,
+        unselectedItemColor: theme.hintColor,
+        currentIndex: _selectedPage,
+        onTap: _openPage,
+        items: [
+          BottomNavigationBarItem(
+            icon: Icon(Icons.search),
+            label: "Search",
           ),
-          const SliverToBoxAdapter(
-            child: SizedBox(
-              height: 16,
-            ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.favorite),
+            label: "Favorite",
           ),
-          SliverToBoxAdapter(
-            child: SizedBox(
-              height: 100,
-              child: ListView.separated(
-                padding: EdgeInsets.only(left: 16),
-                scrollDirection: Axis.horizontal,
-                itemCount: 10,
-                separatorBuilder: (context, index) => SizedBox(width: 16),
-                itemBuilder: (context, index) {
-                  final rhymes = List.generate(4, (index) => "Рифма $index");
-                  return RhymeHistoryCard(
-                    rhymes: rhymes,
-                  );
-                },
-              ),
-            ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.history),
+            label: "History",
           ),
-          const SliverToBoxAdapter(
-            child: SizedBox(
-              height: 16,
-            ),
-          ),
-          SliverList.builder(
-            itemBuilder: (context, index) => RhymeListCard(),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.settings),
+            label: "Settings",
           ),
         ],
       ),
+    );
+  }
+
+  void _openPage(int index) {
+    setState(() {
+      _selectedPage = index;
+      _pageController.animateToPage(index,
+          duration: Duration(milliseconds: 300), curve: Curves.linear);
+    });
+  }
+}
+
+class SearchScreen extends StatelessWidget {
+  const SearchScreen({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return CustomScrollView(
+      slivers: [
+        SliverAppBar(
+          floating: true,
+          pinned: true,
+          snap: true,
+          surfaceTintColor: Colors.transparent,
+          title: Text("Rhymer"),
+          bottom: PreferredSize(
+            preferredSize: Size.fromHeight(70),
+            child: SearchButton(),
+          ),
+        ),
+        const SliverToBoxAdapter(
+          child: SizedBox(
+            height: 16,
+          ),
+        ),
+        SliverToBoxAdapter(
+          child: SizedBox(
+            height: 100,
+            child: ListView.separated(
+              padding: EdgeInsets.only(left: 16),
+              scrollDirection: Axis.horizontal,
+              itemCount: 10,
+              separatorBuilder: (context, index) => SizedBox(width: 16),
+              itemBuilder: (context, index) {
+                final rhymes = List.generate(4, (index) => "Рифма $index");
+                return RhymeHistoryCard(
+                  rhymes: rhymes,
+                );
+              },
+            ),
+          ),
+        ),
+        const SliverToBoxAdapter(
+          child: SizedBox(
+            height: 16,
+          ),
+        ),
+        SliverList.builder(
+          itemBuilder: (context, index) => RhymeListCard(),
+        ),
+      ],
     );
   }
 }
