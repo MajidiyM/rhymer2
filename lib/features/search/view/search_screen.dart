@@ -1,5 +1,6 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
+import 'package:rhymer2/ui/widgets/widgets.dart';
 
 @RoutePage()
 class SearchScreen extends StatelessWidget {
@@ -86,36 +87,6 @@ class RhymeHistoryCard extends StatelessWidget {
           ),
         ],
       ),
-    );
-  }
-}
-
-class BaseContainer extends StatelessWidget {
-  const BaseContainer({
-    super.key,
-    required this.child,
-    required this.width,
-    this.margin,
-    this.padding = const EdgeInsets.only(left: 12),
-  });
-
-  final double width;
-  final EdgeInsets? margin;
-  final EdgeInsets? padding;
-  final Widget child;
-
-  @override
-  Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-    return Container(
-      width: width,
-      margin: margin,
-      padding: padding,
-      decoration: BoxDecoration(
-        color: theme.cardColor,
-        borderRadius: BorderRadius.circular(10),
-      ),
-      child: child,
     );
   }
 }
