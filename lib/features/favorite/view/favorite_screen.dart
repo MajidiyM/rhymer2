@@ -30,7 +30,7 @@ class FavoriteScreen extends StatelessWidget {
             ),
           ),
           SliverList.builder(
-            itemBuilder: (context, index) => RhymeListCard(),
+            itemBuilder: (context, index) => RhymeListCard(isFavorite: true),
           )
         ],
       ),

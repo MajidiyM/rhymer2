@@ -4,7 +4,10 @@ import 'package:rhymer2/ui/ui.dart';
 class RhymeListCard extends StatelessWidget {
   const RhymeListCard({
     super.key,
+    this.isFavorite = false,
   });
+
+  final bool isFavorite;
 
   @override
   Widget build(BuildContext context) {
@@ -20,7 +23,9 @@ class RhymeListCard extends StatelessWidget {
           IconButton(
             onPressed: () {},
             icon: const Icon(Icons.favorite),
-            color: theme.hintColor.withOpacity(0.2),
+            color: isFavorite
+                ? theme.primaryColor
+                : theme.hintColor.withOpacity(0.2),
           )
         ],
       ),
