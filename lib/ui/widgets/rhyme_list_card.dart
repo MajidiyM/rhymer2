@@ -1,17 +1,21 @@
 import 'package:flutter/material.dart';
+import 'package:rhymer2/ui/theme/theme.dart';
 import 'package:rhymer2/ui/ui.dart';
 
 class RhymeListCard extends StatelessWidget {
   const RhymeListCard({
     super.key,
     this.isFavorite = false,
+    required this.rhyme,
+    this.sourceWord,
   });
 
+  final String? sourceWord;
+  final String rhyme;
   final bool isFavorite;
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
     return BaseContainer(
       width: double.infinity,
       margin: const EdgeInsets.symmetric(horizontal: 16).copyWith(bottom: 10),
@@ -19,13 +23,36 @@ class RhymeListCard extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Text("Рифма", style: theme.textTheme.bodyLarge),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              if (sourceWord != null) ...[
+                Text(
+                  sourceWord!,
+                  style: themeData.textTheme.bodyLarge,
+                ),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 4),
+                  child: Icon(
+                    Icons.arrow_forward_ios,
+                    size: 18,
+                    color: themeData.hintColor.withOpacity(0.4),
+                  ),
+                ),
+              ],
+              Text(
+                rhyme,
+                style: themeData.textTheme.bodyLarge
+                    ?.copyWith(fontWeight: FontWeight.w600),
+              ),
+            ],
+          ),
           IconButton(
             onPressed: () {},
             icon: const Icon(Icons.favorite),
             color: isFavorite
-                ? theme.primaryColor
-                : theme.hintColor.withOpacity(0.2),
+                ? themeData.primaryColor
+                : themeData.hintColor.withOpacity(0.2),
           )
         ],
       ),

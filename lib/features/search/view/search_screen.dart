@@ -51,7 +51,9 @@ class SearchScreen extends StatelessWidget {
           ),
         ),
         SliverList.builder(
-          itemBuilder: (context, index) => RhymeListCard(),
+          itemBuilder: (context, index) => RhymeListCard(
+            rhyme: 'Рифма',
+          ),
         ),
       ],
     );
