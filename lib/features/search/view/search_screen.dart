@@ -1,5 +1,6 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
+import 'package:rhymer2/ui/theme/theme.dart';
 
 import '../../../ui/ui.dart';
 import '../widgets/widgets.dart';
@@ -20,7 +21,11 @@ class SearchScreen extends StatelessWidget {
           title: Text("Rhymer"),
           bottom: PreferredSize(
             preferredSize: Size.fromHeight(70),
-            child: SearchButton(),
+            child: SearchButton(
+              onTap: () {
+                _showSearchBottomSheet(context, themeData);
+              },
+            ),
           ),
         ),
         const SliverToBoxAdapter(
@@ -56,6 +61,18 @@ class SearchScreen extends StatelessWidget {
           ),
         ),
       ],
+    );
+  }
+
+  void _showSearchBottomSheet(BuildContext context, ThemeData themeData) {
+    showModalBottomSheet(
+      backgroundColor: Colors.transparent,
+      isScrollControlled: true,
+      context: context,
+      builder: (context) => Padding(
+        padding: const EdgeInsets.only(top: 105.0),
+        child: SearchRhymesBottomSheet(),
+      ),
     );
   }
 }
