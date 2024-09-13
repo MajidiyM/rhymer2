@@ -40,6 +40,10 @@ dependencies:
   retrofit: ^4.4.1
   json_annotation: ^4.9.0
   flutter_dotenv: ^5.1.0
+  flutter_bloc: ^8.1.6
+  bloc: ^8.1.4
+  equatable: ^2.0.5
+
 
 dev_dependencies:
   flutter_test:
