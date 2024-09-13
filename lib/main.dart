@@ -7,17 +7,12 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await dotenv.load(fileName: ".env");
-  
-  final client = initApiClient();
-  runApp(RhymerApp(
-    apiClient: client,
-  ));
+  final client = RhymerApiClient.create(apiUrl: dotenv.env['API_URL']);
+  runApp(RhymerApp());
 }
 
 class RhymerApp extends StatefulWidget {
-  const RhymerApp({super.key, required this.apiClient});
-
-  final RhymerApiClient apiClient;
+  const RhymerApp({super.key});
 
   @override
   State<RhymerApp> createState() => _RhymerAppState();
@@ -25,12 +20,6 @@ class RhymerApp extends StatefulWidget {
 
 class _RhymerAppState extends State<RhymerApp> {
   final _router = AppRouter();
-
-  @override
-  void initState() {
-    widget.apiClient.getRhymesList("grass").then((res) => print(res));
-    super.initState();
-  }
 
   @override
   Widget build(BuildContext context) {

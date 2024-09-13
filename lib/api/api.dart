@@ -11,18 +11,17 @@ part 'api.g.dart';
 abstract class RhymerApiClient {
   factory RhymerApiClient(Dio dio, {String? baseUrl}) = _RhymerApiClient;
 
+  factory RhymerApiClient.create({String? apiUrl}) {
+    final dio = Dio();
+    dio.options.headers["X-Api-Key"] = dotenv.env['API_TOKEN'];
+    if (apiUrl != null) {
+      return RhymerApiClient(dio, baseUrl: apiUrl);
+    }
+    return RhymerApiClient(dio);
+  }
+
   @GET('/rhyme')
-  Future <List<String>> getRhymesList(
+  Future<List<String>> getRhymesList(
     @Query("word") String word,
   );
-}
-
-RhymerApiClient initApiClient() {
-  final apiUrl = dotenv.env['API_URL'];
-  final dio = Dio();
-  dio.options.headers["X-Api-Key"] = dotenv.env['API_TOKEN'];
-  if (apiUrl != null) {
-    return RhymerApiClient(dio, baseUrl: apiUrl);
-  }
-  return RhymerApiClient(dio);
 }
