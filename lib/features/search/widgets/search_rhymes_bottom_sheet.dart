@@ -4,7 +4,9 @@ import '../../../ui/theme/theme.dart';
 import '../../../ui/ui.dart';
 
 class SearchRhymesBottomSheet extends StatelessWidget {
-  const SearchRhymesBottomSheet({super.key});
+  SearchRhymesBottomSheet({super.key, required this.controller});
+
+  final TextEditingController controller;
 
   @override
   Widget build(BuildContext context) {
@@ -22,6 +24,7 @@ class SearchRhymesBottomSheet extends StatelessWidget {
                       borderRadius: BorderRadius.circular(8),
                     ),
                     child: TextField(
+                      controller: controller,
                       cursorColor: themeData.primaryColor,
                       decoration: InputDecoration(
                         hintText: "Search...",
@@ -42,16 +45,19 @@ class SearchRhymesBottomSheet extends StatelessWidget {
                 SizedBox(
                   width: 8,
                 ),
-                Container(
-                  height: 45,
-                  width: 45,
-                  decoration: BoxDecoration(
-                    color: themeData.primaryColor,
-                    borderRadius: BorderRadius.circular(8),
-                  ),
-                  child: Icon(
-                    Icons.search,
-                    color: Colors.white,
+                GestureDetector(
+                  onTap: () => _onTapSearch(context),
+                  child: Container(
+                    height: 45,
+                    width: 45,
+                    decoration: BoxDecoration(
+                      color: themeData.primaryColor,
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                    child: Icon(
+                      Icons.search,
+                      color: Colors.white,
+                    ),
                   ),
                 ),
               ],
@@ -75,5 +81,9 @@ class SearchRhymesBottomSheet extends StatelessWidget {
         ],
       ),
     );
+  }
+
+  void _onTapSearch(BuildContext context) {
+    Navigator.of(context).pop(controller.text);
   }
 }

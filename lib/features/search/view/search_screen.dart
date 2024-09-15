@@ -16,11 +16,10 @@ class SearchScreen extends StatefulWidget {
 }
 
 class _SearchScreenState extends State<SearchScreen> {
+  final TextEditingController _searchController = TextEditingController();
+
   @override
   void initState() {
-    BlocProvider.of<RhymesListBloc>(context).add(
-      SearchRhymes(query: "love"),
-    );
     super.initState();
   }
 
@@ -37,8 +36,9 @@ class _SearchScreenState extends State<SearchScreen> {
           bottom: PreferredSize(
             preferredSize: Size.fromHeight(70),
             child: SearchButton(
+              controller: _searchController,
               onTap: () {
-                _showSearchBottomSheet(context, themeData);
+                _showSearchBottomSheet(context);
               },
             ),
           ),
@@ -77,6 +77,11 @@ class _SearchScreenState extends State<SearchScreen> {
                 ),
               );
             }
+            if (state is RhymesListInitial) {
+              return SliverFillRemaining(
+                child: RhymesListInitialBanner(),
+              );
+            }
             return SliverFillRemaining(
               child: Center(
                 child: CircularProgressIndicator(
@@ -90,15 +95,21 @@ class _SearchScreenState extends State<SearchScreen> {
     );
   }
 
-  void _showSearchBottomSheet(BuildContext context, ThemeData themeData) {
-    showModalBottomSheet(
+  Future<void> _showSearchBottomSheet(BuildContext context) async {
+    final bloc = BlocProvider.of<RhymesListBloc>(context);
+    final query = await showModalBottomSheet<String>(
       backgroundColor: Colors.transparent,
       isScrollControlled: true,
       context: context,
       builder: (context) => Padding(
         padding: const EdgeInsets.only(top: 105.0),
-        child: SearchRhymesBottomSheet(),
+        child: SearchRhymesBottomSheet(
+          controller: _searchController,
+        ),
       ),
     );
+    if (query != null) {
+      bloc.add(SearchRhymes(query: query));
+    }
   }
 }

@@ -1,9 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
-
 import 'package:retrofit/retrofit.dart';
-
-import 'models/models.dart';
+import 'package:rhymer2/api/models/models.dart';
 
 part 'api.g.dart';
 
@@ -21,7 +19,12 @@ abstract class RhymerApiClient {
   }
 
   @GET('/rhyme')
-  Future<List<String>> getRhymesList(
-    @Query("word") String word,
-  );
+  Future<List<String>> getRhymesList(@Query("word") String word);
+}
+
+extension RhymerApiClientExtensions on RhymerApiClient {
+  Future<Rhymes> fetchRhymes(String word) async {
+    final list = await getRhymesList(word);
+    return Rhymes.fromList(list);
+  }
 }

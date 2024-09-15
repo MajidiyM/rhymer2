@@ -7,5 +7,6 @@ final themeData = ThemeData(
   useMaterial3: true,
   textTheme: TextTheme(
     titleMedium: TextStyle(fontWeight: FontWeight.w600, fontSize: 16),
+    headlineLarge: TextStyle(fontWeight: FontWeight.w600, fontSize: 28),
   ),
 );
