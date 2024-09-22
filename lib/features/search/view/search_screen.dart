@@ -73,7 +73,8 @@ class _SearchScreenState extends State<SearchScreen> {
           ),
         ),
         const SliverToBoxAdapter(child: SizedBox(height: 16)),
-        BlocBuilder<RhymesListBloc, RhymesListState>(
+        BlocConsumer<RhymesListBloc, RhymesListState>(
+          listener: _handleRhymesListState,
           builder: (context, state) {
             if (state is RhymesListLoaded) {
               final rhymes = state.rhymes;
@@ -100,6 +101,12 @@ class _SearchScreenState extends State<SearchScreen> {
         )
       ],
     );
+  }
+
+  void _handleRhymesListState(BuildContext context, RhymesListState state) {
+    if (state is RhymesListLoaded) {
+      BlocProvider.of<HistoryRhymesBloc>(context).add(LoadHistoryRhymes());
+    }
   }
 
   Future<void> _showSearchBottomSheet(BuildContext context) async {
