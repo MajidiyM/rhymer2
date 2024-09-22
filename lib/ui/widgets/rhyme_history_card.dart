@@ -3,9 +3,10 @@ import 'package:rhymer2/ui/theme/theme.dart';
 import 'package:rhymer2/ui/ui.dart';
 
 class RhymeHistoryCard extends StatelessWidget {
-  const RhymeHistoryCard({super.key, required this.rhymes});
+  const RhymeHistoryCard({super.key, required this.rhymes, required this.word});
 
   final List<String> rhymes;
+  final String word;
 
   @override
   Widget build(BuildContext context) {
@@ -18,7 +19,7 @@ class RhymeHistoryCard extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            "Рифма",
+            word,
             style: theme.textTheme.bodyLarge?.copyWith(
               fontWeight: FontWeight.w700,
             ),

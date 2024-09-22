@@ -5,6 +5,7 @@ import 'package:rhymer2/features/search/bloc/rhymes_list_bloc.dart';
 import 'package:rhymer2/ui/theme/theme.dart';
 
 import '../../../ui/ui.dart';
+import '../../history/bloc/history_rhymes_bloc.dart';
 import '../widgets/widgets.dart';
 
 @RoutePage()
@@ -49,20 +50,26 @@ class _SearchScreenState extends State<SearchScreen> {
           ),
         ),
         SliverToBoxAdapter(
-          child: SizedBox(
-            height: 100,
-            child: ListView.separated(
-              padding: EdgeInsets.only(left: 16),
-              scrollDirection: Axis.horizontal,
-              itemCount: 10,
-              separatorBuilder: (context, index) => SizedBox(width: 16),
-              itemBuilder: (context, index) {
-                final rhymes = List.generate(4, (index) => "Рифма $index");
-                return RhymeHistoryCard(
-                  rhymes: rhymes,
-                );
-              },
-            ),
+          child: BlocBuilder<HistoryRhymesBloc, HistoryRhymesState>(
+            builder: (context, state) {
+              if (state is! HistoryRhymesLoaded) return const SizedBox();
+              return SizedBox(
+                height: 100,
+                child: ListView.separated(
+                  padding: EdgeInsets.only(left: 16),
+                  scrollDirection: Axis.horizontal,
+                  itemCount: state.rhymes.length,
+                  separatorBuilder: (context, index) => SizedBox(width: 16),
+                  itemBuilder: (context, index) {
+                    final rhymes = state.rhymes[index];
+                    return RhymeHistoryCard(
+                      word: rhymes.word,
+                      rhymes: rhymes.words,
+                    );
+                  },
+                ),
+              );
+            },
           ),
         ),
         const SliverToBoxAdapter(child: SizedBox(height: 16)),
