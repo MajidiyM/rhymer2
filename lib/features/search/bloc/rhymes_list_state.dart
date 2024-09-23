@@ -21,12 +21,15 @@ final class RhymesListLoading extends RhymesListState {
 }
 
 final class RhymesListLoaded extends RhymesListState {
-  RhymesListLoaded({required this.rhymes});
+  RhymesListLoaded({
+    required this.rhymes,
+    required this.query,
+  });
+  final String query;
   final List<String> rhymes;
 
   @override
-  // TODO: implement props
-  List<Object?> get props => super.props..add(rhymes);
+  List<Object?> get props => super.props..addAll([rhymes, query]);
 }
 
 final class RhymesListFailure extends RhymesListState {

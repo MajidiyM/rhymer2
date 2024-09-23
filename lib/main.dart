@@ -2,7 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:realm/realm.dart';
+import 'package:rhymer2/features/favorite/bloc/favorite_rhymes_bloc.dart';
 import 'package:rhymer2/features/history/bloc/history_rhymes_bloc.dart';
+import 'package:rhymer2/repositories/favorite/favorite.dart';
+import 'package:rhymer2/repositories/favorite/model/favorite_rhymes.dart';
 import 'package:rhymer2/repositories/history/history.dart';
 import 'package:rhymer2/repositories/history/models/history_rhymes.dart';
 import 'package:rhymer2/router/router.dart';
@@ -14,7 +17,8 @@ import 'features/search/bloc/rhymes_list_bloc.dart';
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await dotenv.load(fileName: ".env");
-  final config = Configuration.local([HistoryRhymes.schema]);
+  final config =
+      Configuration.local([HistoryRhymes.schema, FavoriteRhymes.schema]);
   final realm = Realm(config);
   runApp(RhymerApp(
     realm: realm,
@@ -36,18 +40,26 @@ class _RhymerAppState extends State<RhymerApp> {
   @override
   Widget build(BuildContext context) {
     final historyRepository = HistoryRepository(realm: widget.realm);
+    final favoriteRepository = FavoriteRepository(realm: widget.realm);
     return MultiBlocProvider(
       providers: [
         BlocProvider(
           create: (context) => RhymesListBloc(
-              apiClient: RhymerApiClient.create(apiUrl: dotenv.env["API_URL"]),
-              historyRepository: HistoryRepository(realm: widget.realm)),
+            apiClient: RhymerApiClient.create(apiUrl: dotenv.env["API_URL"]),
+            historyRepository: HistoryRepository(realm: widget.realm),
+            favoriteRepositoryInterface: favoriteRepository,
+          ),
         ),
         BlocProvider(
           create: (context) => HistoryRhymesBloc(
             historyRepository: historyRepository,
           ),
         ),
+        BlocProvider(
+          create: (context) => FavoriteRhymesBloc(
+            favoriteRepository: favoriteRepository,
+          ),
+        )
       ],
       child: MaterialApp.router(
         debugShowCheckedModeBanner: false,

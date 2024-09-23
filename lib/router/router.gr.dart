@@ -10,20 +10,20 @@
 part of 'router.dart';
 
 /// generated route for
-/// [FavoriteScreen]
-class FavoriteRoute extends PageRouteInfo<void> {
-  const FavoriteRoute({List<PageRouteInfo>? children})
+/// [FavoritesScreen]
+class FavoritesRoute extends PageRouteInfo<void> {
+  const FavoritesRoute({List<PageRouteInfo>? children})
       : super(
-          FavoriteRoute.name,
+          FavoritesRoute.name,
           initialChildren: children,
         );
 
-  static const String name = 'FavoriteRoute';
+  static const String name = 'FavoritesRoute';
 
   static PageInfo page = PageInfo(
     name,
     builder: (data) {
-      return const FavoriteScreen();
+      return const FavoritesScreen();
     },
   );
 }

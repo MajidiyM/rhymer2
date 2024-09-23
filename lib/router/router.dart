@@ -21,7 +21,7 @@ class AppRouter extends RootStackRouter {
               path: "search",
             ),
             AutoRoute(
-              page: FavoriteRoute.page,
+              page: FavoritesRoute.page,
               path: "favorite",
             ),
             AutoRoute(

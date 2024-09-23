@@ -21,7 +21,7 @@ class _HomeScreenState extends State<HomeScreen> {
       body: AutoTabsRouter(
         routes: [
           SearchRoute(),
-          FavoriteRoute(),
+          FavoritesRoute(),
           HistoryRoute(),
           SettingsRoute(),
         ],

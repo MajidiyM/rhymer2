@@ -78,12 +78,18 @@ class _SearchScreenState extends State<SearchScreen> {
           builder: (context, state) {
             if (state is RhymesListLoaded) {
               final rhymes = state.rhymes;
+              final rhymesModel = state.rhymes;
+
               return SliverList.builder(
-                itemCount: rhymes.length,
-                itemBuilder: (context, index) => RhymeListCard(
-                  rhyme: rhymes[index],
-                ),
-              );
+                  itemCount: rhymes.length,
+                  itemBuilder: (context, index) {
+                    final rhyme = rhymes[index];
+                    return RhymeListCard(
+                      rhyme: rhyme,
+                      onTap: () =>
+                          _toggleFavorite(context, rhymesModel, state, rhyme),
+                    );
+                  });
             }
             if (state is RhymesListInitial) {
               return SliverFillRemaining(
@@ -100,6 +106,17 @@ class _SearchScreenState extends State<SearchScreen> {
           },
         )
       ],
+    );
+  }
+
+  void _toggleFavorite(BuildContext context, List<String> rhymesModel,
+      RhymesListLoaded state, String currentRhyme) {
+    BlocProvider.of<RhymesListBloc>(context).add(
+      ToggleFavoriteRhymes(
+        rhymes: rhymesModel,
+        query: state.query,
+        favoriteWord: currentRhyme,
+      ),
     );
   }
 

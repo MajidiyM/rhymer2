@@ -1,5 +1,6 @@
 import 'package:uuid/uuid.dart';
 
+import '../../repositories/favorite/model/model.dart';
 import '../../repositories/history/models/models.dart';
 
 class Rhymes {
@@ -13,10 +14,20 @@ class Rhymes {
 }
 
 extension RhymesListExtensions on List<String> {
-  HistoryRhymes toHistory(String word) {
+  HistoryRhymes toHistory(String queryWord) {
     return HistoryRhymes(
       Uuid().v4().toString(),
-      word,
+      queryWord,
+      words: this,
+    );
+  }
+
+  FavoriteRhymes toFavorite(String queryWord, String favoriteWord) {
+    return FavoriteRhymes(
+      Uuid().v4().toString(),
+      queryWord,
+      favoriteWord,
+      DateTime.now(),
       words: this,
     );
   }

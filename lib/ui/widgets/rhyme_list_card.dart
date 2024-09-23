@@ -8,11 +8,13 @@ class RhymeListCard extends StatelessWidget {
     this.isFavorite = false,
     required this.rhyme,
     this.sourceWord,
+    required this.onTap,
   });
 
   final String? sourceWord;
   final String rhyme;
   final bool isFavorite;
+  final VoidCallback onTap;
 
   @override
   Widget build(BuildContext context) {
@@ -48,7 +50,7 @@ class RhymeListCard extends StatelessWidget {
             ],
           ),
           IconButton(
-            onPressed: () {},
+            onPressed: onTap,
             icon: const Icon(Icons.favorite),
             color: isFavorite
                 ? themeData.primaryColor
