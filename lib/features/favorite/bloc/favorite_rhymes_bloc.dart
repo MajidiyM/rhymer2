@@ -15,7 +15,7 @@ class FavoriteRhymesBloc
       : _favoriteRepository = favoriteRepository,
         super(FavoriteRhymesInitial()) {
     on<LoadFavoriteRhymes>(_load);
-    on<ToggleFavoriteRhymes>(_toggleFavorite);
+    on<ToggleFavoriteRhyme>(_toggleFavorite);
   }
 
   final FavoriteRepositoryInterface _favoriteRepository;
@@ -34,7 +34,7 @@ class FavoriteRhymesBloc
   }
 
   Future<void> _toggleFavorite(
-    ToggleFavoriteRhymes event,
+    ToggleFavoriteRhyme event,
     Emitter<FavoriteRhymesState> emit,
   ) async {
     try {

@@ -8,8 +8,8 @@ sealed class FavoriteRhymesEvent extends Equatable {
 
 final class LoadFavoriteRhymes extends FavoriteRhymesEvent {}
 
-final class ToggleFavoriteRhymes extends FavoriteRhymesEvent {
-  ToggleFavoriteRhymes({required this.favoriteRhymes});
+final class ToggleFavoriteRhyme extends FavoriteRhymesEvent {
+  ToggleFavoriteRhyme({required this.favoriteRhymes});
 
   final FavoriteRhymes favoriteRhymes;
 

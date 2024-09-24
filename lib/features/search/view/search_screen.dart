@@ -1,6 +1,9 @@
+import 'dart:async';
+
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:rhymer2/features/favorite/bloc/favorite_rhymes_bloc.dart';
 import 'package:rhymer2/features/search/bloc/rhymes_list_bloc.dart';
 import 'package:rhymer2/ui/theme/theme.dart';
 
@@ -85,6 +88,7 @@ class _SearchScreenState extends State<SearchScreen> {
                   itemBuilder: (context, index) {
                     final rhyme = rhymes[index];
                     return RhymeListCard(
+                      isFavorite: state.isFavorite(rhyme),
                       rhyme: rhyme,
                       onTap: () =>
                           _toggleFavorite(context, rhymesModel, state, rhyme),
@@ -109,15 +113,26 @@ class _SearchScreenState extends State<SearchScreen> {
     );
   }
 
-  void _toggleFavorite(BuildContext context, List<String> rhymesModel,
-      RhymesListLoaded state, String currentRhyme) {
-    BlocProvider.of<RhymesListBloc>(context).add(
+  Future<void> _toggleFavorite(
+    BuildContext context,
+    List<String> rhymesModel,
+    RhymesListLoaded state,
+    String currentRhyme,
+  ) async {
+    final rhymesListBloc = BlocProvider.of<RhymesListBloc>(context);
+    final favoriteRhymesBloc = BlocProvider.of<FavoriteRhymesBloc>(context);
+
+    final completer = Completer();
+    rhymesListBloc.add(
       ToggleFavoriteRhymes(
         rhymes: rhymesModel,
         query: state.query,
         favoriteWord: currentRhyme,
+        completer: completer,
       ),
     );
+    await completer.future;
+    favoriteRhymesBloc.add(LoadFavoriteRhymes());
   }
 
   void _handleRhymesListState(BuildContext context, RhymesListState state) {

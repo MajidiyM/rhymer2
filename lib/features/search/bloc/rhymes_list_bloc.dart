@@ -1,9 +1,14 @@
+import 'dart:async';
+import 'dart:developer';
+
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:rhymer2/api/api.dart';
 import 'package:rhymer2/api/models/models.dart';
 import 'package:rhymer2/repositories/favorite/favorite_repository_interface.dart';
 import 'package:rhymer2/repositories/history/history.dart';
+
+import '../../../repositories/favorite/model/model.dart';
 
 part 'rhymes_list_event.dart';
 part 'rhymes_list_state.dart';
@@ -34,7 +39,12 @@ class RhymesListBloc extends Bloc<RhymesListEvent, RhymesListState> {
       final rhymes = await _apiClient.getRhymesList(event.query);
       final historyRhymes = rhymes.toHistory(event.query);
       await _historyRepository.setRhymes(historyRhymes);
-      emit(RhymesListLoaded(rhymes: rhymes, query: event.query));
+      final favoriteRhymes = await _favoriteRepository.getRhymesList();
+      emit(RhymesListLoaded(
+        rhymes: rhymes,
+        query: event.query,
+        favoriteRhymes: favoriteRhymes,
+      ));
     } catch (e) {
       emit(RhymesListFailure(error: e));
     }
@@ -45,12 +55,21 @@ class RhymesListBloc extends Bloc<RhymesListEvent, RhymesListState> {
     Emitter<RhymesListState> emit,
   ) async {
     try {
+      final prevState = state;
+      if (prevState is! RhymesListLoaded) {
+        log("state is not RhymesListLoaded");
+        return;
+      }
       await _favoriteRepository.createOrDeleteRhymes(event.rhymes.toFavorite(
         event.query,
         event.favoriteWord,
       ));
+      final favoriteRhymes = await _favoriteRepository.getRhymesList();
+      emit(prevState.copyWith(favoriteRhymes: favoriteRhymes));
     } catch (e) {
       emit(RhymesListFailure(error: e));
+    } finally {
+      event.completer?.complete();
     }
   }
 }
