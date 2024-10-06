@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 
-import '../../../ui/theme/theme.dart';
-
 class RhymesListInitialBanner extends StatelessWidget {
   const RhymesListInitialBanner({
     super.key,
@@ -9,17 +7,18 @@ class RhymesListInitialBanner extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     return Center(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Text(
             "Начни искать",
-            style: themeData.textTheme.headlineLarge,
+            style: theme.textTheme.headlineLarge,
           ),
           Text(
             "Введите слово в строку поиска, \nчтобы найти рифмы",
-            style: themeData.textTheme.bodyMedium,
+            style: theme.textTheme.titleMedium,
             textAlign: TextAlign.center,
           ),
         ],
