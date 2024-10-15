@@ -64,7 +64,7 @@ class SettingsScreen extends StatelessWidget {
               title: 'Очистить историю',
               iconData: Icons.delete,
               iconColor: theme.primaryColor,
-              ontap: () => _confirmClearHistory(context),
+              onTap: () => _confirmClearHistory(context),
             ),
           ),
           SliverToBoxAdapter(
@@ -72,10 +72,29 @@ class SettingsScreen extends StatelessWidget {
               title: 'Поддержка',
               iconData: Icons.message_rounded,
               iconColor: themeData.hintColor.withOpacity(0.3),
+              onTap: () {
+                _openSupport(context);
+              },
             ),
           ),
         ],
       ),
+    );
+  }
+
+  void _openSupport(BuildContext context) {
+    final theme = Theme.of(context);
+    if (theme.isAndroid) {
+      showModalBottomSheet(
+        backgroundColor: Colors.white,
+        context: context,
+        builder: (context) => SupportBottomSheet(),
+      );
+      return;
+    }
+    showCupertinoModalPopup(
+      context: context,
+      builder: (context) => SupportBottomSheet(),
     );
   }
 
@@ -107,6 +126,100 @@ class SettingsScreen extends StatelessWidget {
 
   void _clearHistory(BuildContext context) {
     BlocProvider.of<HistoryRhymesBloc>(context).add(ClearRhymesHistory());
+  }
+}
+
+class SupportBottomSheet extends StatelessWidget {
+  const SupportBottomSheet({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    if (theme.isAndroid) {
+      return Padding(
+        padding: const EdgeInsets.all(24.0).copyWith(top: 12),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Row(
+              children: [
+                Spacer(),
+                IconButton(
+                  onPressed: () => _close(context),
+                  icon: Icon(
+                    Icons.close,
+                    color: theme.colorScheme.primary,
+                  ),
+                ),
+              ],
+            ),
+            SizedBox(height: 8),
+            SizedBox(
+              width: double.infinity,
+              height: 56,
+              child: ElevatedButton.icon(
+                icon: Icon(Icons.telegram),
+                label: Text("Написать в Telegram"),
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: theme.colorScheme.primary,
+                  foregroundColor: Colors.white,
+                ),
+                onPressed: () {},
+              ),
+            ),
+            SizedBox(
+              height: 12,
+            ),
+            SizedBox(
+              width: double.infinity,
+              height: 56,
+              child: OutlinedButton.icon(
+                icon: Icon(Icons.email),
+                label: Text("Отправить Email"),
+                style: OutlinedButton.styleFrom(
+                  foregroundColor: theme.colorScheme.primary,
+                ),
+                onPressed: () {},
+              ),
+            )
+          ],
+        ),
+      );
+    }
+    return CupertinoActionSheet(
+      title: Text("Поддержка"),
+      message: Text("Ответим вам быстро!"),
+      actions: <CupertinoActionSheetAction>[
+        CupertinoActionSheetAction(
+          child: Text(
+            "Написать в Telegram",
+            style: TextStyle(
+              color: theme.cupertinoActionColor,
+            ),
+          ),
+          onPressed: () {
+            Navigator.pop(context);
+          },
+        ),
+        CupertinoActionSheetAction(
+          child: Text(
+            "Отправить Email",
+            style: TextStyle(
+              color: theme.cupertinoActionColor,
+            ),
+          ),
+          onPressed: () {
+            Navigator.pop(context);
+          },
+        ),
+      ],
+    );
+  }
+
+  void _close(BuildContext context) {
+    Navigator.of(context).pop();
   }
 }
 
@@ -162,7 +275,7 @@ class ConfirmationDialog extends StatelessWidget {
           child: Text(
             "Нет",
             style: TextStyle(
-              color: Color(0xFF3478F7),
+              color: theme.cupertinoActionColor,
             ),
           ),
         ),

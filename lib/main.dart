@@ -11,11 +11,11 @@ import 'package:rhymer2/repositories/history/history.dart';
 import 'package:rhymer2/repositories/history/models/history_rhymes.dart';
 import 'package:rhymer2/repositories/settings/settings.dart';
 import 'package:rhymer2/router/router.dart';
-import 'package:rhymer2/ui/theme/theme.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'api/api.dart';
 import 'features/search/bloc/rhymes_list_bloc.dart';
+import 'ui/theme/theme.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();

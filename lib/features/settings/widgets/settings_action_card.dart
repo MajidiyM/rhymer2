@@ -7,19 +7,19 @@ class SettingsActionCard extends StatelessWidget {
   const SettingsActionCard(
       {super.key,
       required this.title,
-      this.ontap,
+      this.onTap,
       required this.iconData,
       this.iconColor});
 
   final String title;
   final IconData iconData;
   final Color? iconColor;
-  final VoidCallback? ontap;
+  final VoidCallback? onTap;
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: ontap,
+      onTap: onTap,
       child: Padding(
         padding:
             const EdgeInsets.symmetric(horizontal: 16).copyWith(bottom: 10),
